@@ -8,7 +8,47 @@ namespace CSharpToSqlLib
     {
         public SqlConnection sqlconn { get; set; } // property for SQL Conn. 
 
-        public User GetByPK(int id)
+        public List<Vendors> GetAllVendors() // new method 
+        {
+            var sql = "Select * from Vendors ;"; //var assigned to sql statement 
+            var cmd = new SqlCommand(sql, sqlconn); // assign sql conn to var
+            var sqldatareader = cmd.ExecuteReader(); // executes the select statement and stores data into variable
+            var vendors = new List<Vendors>(); // create a new list for users
+
+            while (sqldatareader.Read())// while reader is reading ... 
+            { // var = convert [column name in database]
+                var id = Convert.ToInt32(sqldatareader["Id"]);
+                var code = Convert.ToString(sqldatareader["Code"]);
+                var name = sqldatareader["name"].ToString();
+                var address = sqldatareader["address"].ToString();
+                var city = sqldatareader["City"].ToString();
+                var state = sqldatareader["State"].ToString();
+                var zip = sqldatareader["Zip"].ToString();
+                var phone = sqldatareader["Phone"].ToString();
+                var email = sqldatareader["Email"].ToString();
+
+                var vendor = new Vendors() // creating an instance of class Vendor 
+                {// assigning data to variables 
+                    Id = id,
+                    Code = code,
+                    Name = name,
+                    Address = address,
+                    City = city,
+                    State = state,
+                    Zip = zip,
+                    Phone = phone,
+                    Email = email
+                };
+                vendors.Add(vendor); // adding what is read into a list 
+
+            }
+            sqldatareader.Close(); // closes reader// only 1 reader can be open at a time
+            return vendors; // return the data of vender 
+
+
+        }
+
+            public User GetByPK(int id) //methods
         {
             var sql = $"Select * from Users where Id = {id};";
             var cmd = new SqlCommand(sql, sqlconn);
