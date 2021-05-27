@@ -9,6 +9,11 @@ namespace CSharpToSqlLib
    {
         private static Connection connection { get; set; }
 
+        public UsersController(Connection connection)
+        {
+            UsersController.connection = connection;
+        }
+
         private User FillUserForSqlRow(SqlDataReader sqldatareader)
         {
             var user = new User()
@@ -38,6 +43,33 @@ namespace CSharpToSqlLib
             cmd.Parameters.AddWithValue("@isreviewer", user.IsReviewer);
             cmd.Parameters.AddWithValue("@isadmin", user.IsAdmin);
         }
+
+        public User GetByUsername(User username)
+        {
+            var sql = " SELECT * from Users Where username = @username; ";
+            var cmd = new SqlCommand(sql, connection.sqlconn);
+            cmd.Parameters.AddWithValue("@username", username);
+            var sqldatareader = cmd.ExecuteReader();
+
+            if (!sqldatareader.HasRows)
+            {
+                sqldatareader.Close();
+                return null;
+            }
+
+            sqldatareader.Read();
+            var vendor = FillUserForSqlRow(sqldatareader);
+            sqldatareader.Close();
+            return username;
+           
+        }
+
+
+
+
+
+
+
 
 
         public List<User> GetAll()

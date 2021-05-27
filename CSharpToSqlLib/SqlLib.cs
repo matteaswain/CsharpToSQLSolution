@@ -164,7 +164,7 @@ namespace CSharpToSqlLib
         }
         public void Connect() // create method to connect to SQL database
         {
-            var connStr = "server=localhost\\sqlexpress;" + // server = 'server location'\\ instance name;
+            var connStr = "server=localhost\\sqlexpress01;" + // server = 'server location'\\ instance name;
                            "database=PrsDb;" + // database = 'db name';
                            "trusted_connection=true;"; // sub for username/password
                                                        //
