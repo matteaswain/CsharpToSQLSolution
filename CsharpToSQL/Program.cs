@@ -8,11 +8,11 @@ namespace CsharpToSQL
         static void Main(string[] args)
  // Concept: Dependency Injection \\ uses the constructor in the VC class to inject a need into another class
         {        // creating a connection placing in var sqlconn 
-            var sqlconn = new Connection("localhost\\sqlexpress","PrsDb"); 
-  //creating new instance of VendorController / storing connetion into var vendorcontroller
-           //var vendorsController = new VendorsController(sqlconn); // 
+            var sqlconn = new Connection("localhost\\sqlexpress","PrsDb");
+            //creating new instance of VendorController / storing connetion into var vendorcontroller
+            //var vendorsController = new VendorsController(sqlconn); // 
             //var vendors = vendorsController.GetAll();
-// INSERTING A NEW VENDOR
+            // INSERTING A NEW VENDOR
 
             //var newvendor = new Vendors()
             //{
@@ -26,17 +26,20 @@ namespace CsharpToSQL
             //    Email = "KrogerPlus@email.com"
             //};
             //var success = vendorsController.Create(newvendor);
-            
 
-// INSERTING A NEW PRODUCT
+
+            // INSERTING A NEW PRODUCT
 
             //var productcntrol = new ProductsController(sqlconn);
             //var products = productcntrol.GetAll();
 
             //var newproduct = new Product()
             //{
-            //    PartNbr = "Skyline", Name = "SkyLine Chili", Price = 5,
-            //    Unit = "Each", PhotoPath = null
+            //    PartNbr = "Kona",
+            //    Name = "Kona Coffee",
+            //    Price = 7,
+            //    Unit = "Each",
+            //    PhotoPath = null
             //};
             //var success = productcntrol.Create(newproduct, "KROG");
 

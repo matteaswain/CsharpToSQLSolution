@@ -29,6 +29,16 @@ namespace CSharpToSqlLib
             return product;
         }
 
+        private void FillParameterForSql(SqlCommand cmd, Product product)
+        {
+            cmd.Parameters.AddWithValue("@PartNbr", product.PartNbr);
+            cmd.Parameters.AddWithValue("@Name", product.Name);
+            cmd.Parameters.AddWithValue("@Price", product.Price);
+            cmd.Parameters.AddWithValue("@Unit", product.Unit);
+            cmd.Parameters.AddWithValue("@PhotoPath", (object)product.PhotoPath ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@VendorId", product.VendorId);
+        }
+
 
         public List<Product> GetAll()
         {
@@ -104,13 +114,7 @@ namespace CSharpToSqlLib
                 " (@PartNbr, @Name, @Price, @Unit, @PhotoPath, @VendorId) ; ";
 
             var cmd = new SqlCommand(sql, connection.sqlconn);
-            cmd.Parameters.AddWithValue("@PartNbr", product.PartNbr);
-            cmd.Parameters.AddWithValue("@Name", product.Name);
-            cmd.Parameters.AddWithValue("@Price", product.Price);
-            cmd.Parameters.AddWithValue("@Unit", product.Unit);
-            cmd.Parameters.AddWithValue("@PhotoPath", (object)product.PhotoPath ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("@VendorId", product.VendorId);
-
+            FillParameterForSql(cmd, product);
             var rowsAffected = cmd.ExecuteNonQuery();
 
             return (rowsAffected == 1);
@@ -129,13 +133,7 @@ namespace CSharpToSqlLib
                 " Where Id = @Id ; ";
 
             var cmd = new SqlCommand(sql, connection.sqlconn);
-            cmd.Parameters.AddWithValue(" @PartNbr", product.PartNbr);
-            cmd.Parameters.AddWithValue("@Name", product.Name);
-            cmd.Parameters.AddWithValue("@Price", product.Price);
-            cmd.Parameters.AddWithValue("@Unit", product.Unit);
-            cmd.Parameters.AddWithValue("@PhotoPath", (object)product.PhotoPath ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("@VendorId", product.VendorId);
-
+            FillParameterForSql(cmd, product);
             var rowsAffected = cmd.ExecuteNonQuery();
 
             return (rowsAffected == 1);

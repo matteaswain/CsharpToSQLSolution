@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CSharpToSqlLib
 {
-    public class Vendors // create class for table 'Vendors'
+    public class Vendor // create class for table 'Vendors'
     { // propertiess relfect the column headers in table 'Vendors'
         public int Id { get; set; }
         public string Code { get; set; }

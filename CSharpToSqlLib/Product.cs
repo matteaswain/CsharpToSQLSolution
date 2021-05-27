@@ -13,7 +13,7 @@ namespace CSharpToSqlLib
         public string Unit { get; set; }
         public string PhotoPath { get; set; }
         public int VendorId { get; set; }
-        public Vendors Vendor { get; set; }
+        public Vendor Vendor { get; set; }
 
 
 

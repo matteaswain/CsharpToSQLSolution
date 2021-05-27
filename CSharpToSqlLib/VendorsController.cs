@@ -15,9 +15,9 @@ namespace CSharpToSqlLib
             VendorsController.connection = connection;
         }
 
-        private Vendors FillVendorForSqlRow(SqlDataReader sqldatareader)
+        private Vendor FillVendorForSqlRow(SqlDataReader sqldatareader)
         {
-            var vendor = new Vendors() // creating a new instance of the class Vendors
+            var vendor = new Vendor() // creating a new instance of the class Vendors
             {
                 // assigning data to variables
                 Id = Convert.ToInt32(sqldatareader["Id"]),
@@ -33,13 +33,25 @@ namespace CSharpToSqlLib
             return vendor; 
         }
 
+        private void FillParameterForSql(SqlCommand cmd, Vendor vendor)
+        {
+            cmd.Parameters.AddWithValue("@Code", vendor.Code);
+            cmd.Parameters.AddWithValue("@Name", vendor.Name);
+            cmd.Parameters.AddWithValue("@Address", vendor.Address);
+            cmd.Parameters.AddWithValue("@City", vendor.City);
+            cmd.Parameters.AddWithValue("@State", vendor.State);
+            cmd.Parameters.AddWithValue("@Zip", vendor.Zip);
+            cmd.Parameters.AddWithValue("@Phone", vendor.Phone);
+            cmd.Parameters.AddWithValue("@Email", vendor.Email);
 
-        public List<Vendors> GetAll() // new method 
+        }
+
+        public List<Vendor> GetAll() // new method 
         {
             var sql = "Select * from Vendors ;"; //var assigned to sql statement 
             var cmd = new SqlCommand(sql, connection.sqlconn); // assign sql conn to var
             var sqldatareader = cmd.ExecuteReader(); // executes the select statement and stores data into variable
-            var vendors = new List<Vendors>(); // create a new list for users
+            var vendors = new List<Vendor>(); // create a new list for users
 // reader - acts as pointer and returns true or false pending on if there is row of datas. rows = true, no rows = false
             while (sqldatareader.Read())// while reader is reading ... 
             { // var = convert [column name in database]
@@ -51,7 +63,7 @@ namespace CSharpToSqlLib
             return vendors; // return list of vendors 
         }
 
-        public Vendors GetByCode(string code)
+        public Vendor GetByCode(string code)
         {
             var sql = " SELECT * from Vendors Where code = @code; ";
             var cmd = new SqlCommand(sql, connection.sqlconn);
@@ -74,7 +86,7 @@ namespace CSharpToSqlLib
         }
 
 
-        public Vendors GetByPK(int id)
+        public Vendor GetByPK(int id)
         {
             var sql = $"Select * from Vendors where Id = {id};";
             var cmd = new SqlCommand(sql, connection.sqlconn);
@@ -93,7 +105,7 @@ namespace CSharpToSqlLib
             return vendor;
         }
 
-        public bool Create(Vendors vendors)
+        public bool Create(Vendor vendor)
         {
             var sql = $" Insert into Vendors " +
                 "(Code, Name, Address, City, State, Zip, Phone, Email) " +
@@ -101,20 +113,13 @@ namespace CSharpToSqlLib
                 "(@Code, @Name, @Address, @City, @State, @Zip, @Phone, @Email) ; ";
 
             var cmd = new SqlCommand(sql, connection.sqlconn);
-            cmd.Parameters.AddWithValue("@Code" , vendors.Code);
-            cmd.Parameters.AddWithValue("@Name", vendors.Name);
-            cmd.Parameters.AddWithValue("@Address", vendors.Address);
-            cmd.Parameters.AddWithValue("@City", vendors.City);
-            cmd.Parameters.AddWithValue("@State", vendors.State);
-            cmd.Parameters.AddWithValue("@Zip", vendors.Zip);
-            cmd.Parameters.AddWithValue("@Phone", vendors.Phone);
-            cmd.Parameters.AddWithValue("@Email", vendors.Email);
+            FillParameterForSql(cmd, vendor);
+           
             var rowsAffected = cmd.ExecuteNonQuery();
 
             return (rowsAffected == 1);            
         }
-
-        public bool Change(Vendors vendors)
+        public bool Change(Vendor vendor)
         {
             var sql = " UPDATE Vendors set " +
                 " Code = @Code, " +
@@ -128,24 +133,17 @@ namespace CSharpToSqlLib
                 "Where Id = @Id; ";
 
             var cmd = new SqlCommand(sql, connection.sqlconn);
-            cmd.Parameters.AddWithValue("@Code", vendors.Code);
-            cmd.Parameters.AddWithValue("@Name", vendors.Name);
-            cmd.Parameters.AddWithValue("@Address", vendors.Address);
-            cmd.Parameters.AddWithValue("@City", vendors.City);
-            cmd.Parameters.AddWithValue("@State", vendors.State);
-            cmd.Parameters.AddWithValue("@Zip", vendors.Zip);
-            cmd.Parameters.AddWithValue("@Phone", vendors.Phone);
-            cmd.Parameters.AddWithValue("@Email", vendors.Email);
+            FillParameterForSql(cmd, vendor);
             var rowsAffected = cmd.ExecuteNonQuery();
 
             return (rowsAffected == 1);
         }
 
-        public bool Delete(Vendors vendors)
+        public bool Delete(Vendor vendor)
         {
             var sql = " DELETE from Vendors where Id = @Id; ";
             var cmd = new SqlCommand(sql, connection.sqlconn);
-            cmd.Parameters.AddWithValue("@Id", vendors.Id);
+            cmd.Parameters.AddWithValue("@Id", vendor.Id);
             var rowsAffected = cmd.ExecuteNonQuery();
 
             return (rowsAffected == 1);
