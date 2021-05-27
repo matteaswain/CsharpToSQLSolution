@@ -98,8 +98,35 @@ namespace CSharpToSqlLib
         }
 
 
+        public bool Change (User user)
+        {
+            var sql = " UPDATE Users set " +
+                " Code = @Code, " +
+                " Name = @Name, " +
+                " Address = @Address, " +
+                " City = @City, " +
+                " State = @State, " +
+                " Zip = @Zip, " +
+                " Phone = @Phone, " +
+                " Email = @Email, " +
+                "Where Id = @Id; ";
 
+            var cmd = new SqlCommand(sql, connection.sqlconn);
+            FillParameterForSql(cmd, user);
+            var rowsAffected = cmd.ExecuteNonQuery();
 
+            return (rowsAffected == 1);
+        }
+
+        public bool Delete (User user)
+        {
+            var sql = " DELETE from Users where Id = @Id; ";
+            var cmd = new SqlCommand(sql, connection.sqlconn);
+            cmd.Parameters.AddWithValue("@Id", user.Id);
+            var rowsAffected = cmd.ExecuteNonQuery();
+
+            return (rowsAffected == 1);
+        }
 
 
 
