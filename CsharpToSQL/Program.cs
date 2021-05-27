@@ -7,19 +7,40 @@ namespace CsharpToSQL
     {
         static void Main(string[] args)
  // Concept: Dependency Injection \\ uses the constructor in the VC class to inject a need into another class
-        {        // creating a connection placing in var sqlconn
+        {        // creating a connection placing in var sqlconn 
             var sqlconn = new Connection("localhost\\sqlexpress","PrsDb"); 
   //creating new instance of VendorController / storing connetion into var vendorcontroller
-            var vendorsController = new VendorsController(sqlconn); // 
-            var vendors = vendorsController.GetAll();
+           //var vendorsController = new VendorsController(sqlconn); // 
+            //var vendors = vendorsController.GetAll();
+// INSERTING A NEW VENDOR
 
-            var productcntrol = new ProductsController(sqlconn);
-            var products = productcntrol.GetAll();
+            //var newvendor = new Vendors()
+            //{
+            //    Code = "KROG",
+            //    Name = "Kroger",
+            //    Address = "123 Krogie Street",
+            //    City = "Reno",
+            //    State = "NV",
+            //    Zip = "54321",
+            //    Phone = "8901976574",
+            //    Email = "KrogerPlus@email.com"
+            //};
+            //var success = vendorsController.Create(newvendor);
+            
 
+// INSERTING A NEW PRODUCT
 
+            //var productcntrol = new ProductsController(sqlconn);
+            //var products = productcntrol.GetAll();
 
+            //var newproduct = new Product()
+            //{
+            //    PartNbr = "Skyline", Name = "SkyLine Chili", Price = 5,
+            //    Unit = "Each", PhotoPath = null
+            //};
+            //var success = productcntrol.Create(newproduct, "KROG");
 
-
+            //var product = productcntrol.GetByPK(2);
 
 
 
@@ -29,6 +50,7 @@ namespace CsharpToSQL
 
            // var sqllib = new SqlLib(); // new instance of your Library class
            // sqllib.Connect(); // calling the Conn method 
+// INSERTING A NEW USER
 
            // //var newuser = new User() // instance of the user class
            // //{

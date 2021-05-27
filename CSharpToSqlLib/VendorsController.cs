@@ -15,6 +15,25 @@ namespace CSharpToSqlLib
             VendorsController.connection = connection;
         }
 
+        private Vendors FillVendorForSqlRow(SqlDataReader sqldatareader)
+        {
+            var vendor = new Vendors() // creating a new instance of the class Vendors
+            {
+                // assigning data to variables
+                Id = Convert.ToInt32(sqldatareader["Id"]),
+                Code = Convert.ToString(sqldatareader["Code"]),
+                Name = Convert.ToString(sqldatareader["Name"]),
+                Address = Convert.ToString(sqldatareader["Address"]),
+                City = Convert.ToString(sqldatareader["City"]),
+                State = Convert.ToString(sqldatareader["State"]),
+                Zip = Convert.ToString(sqldatareader["Zip"]),
+                Phone = Convert.ToString(sqldatareader["Phone"]),
+                Email = Convert.ToString(sqldatareader["Email"])
+            };
+            return vendor; 
+        }
+
+
         public List<Vendors> GetAll() // new method 
         {
             var sql = "Select * from Vendors ;"; //var assigned to sql statement 
@@ -24,29 +43,42 @@ namespace CSharpToSqlLib
 // reader - acts as pointer and returns true or false pending on if there is row of datas. rows = true, no rows = false
             while (sqldatareader.Read())// while reader is reading ... 
             { // var = convert [column name in database]
-               
-                var vendor = new Vendors() // creating an instance of class Vendor 
-                {// assigning data to variables 
-                    Id = Convert.ToInt32(sqldatareader["Id"]),
-                    Code = Convert.ToString(sqldatareader["Code"]),
-                    Name = Convert.ToString(sqldatareader["Name"]),
-                    Address = Convert.ToString(sqldatareader["Address"]),
-                    City = Convert.ToString(sqldatareader["City"]),
-                    State = Convert.ToString(sqldatareader["State"]),
-                    Zip = Convert.ToString(sqldatareader["Zip"]),
-                    Phone = Convert.ToString(sqldatareader["Phone"]),
-                    Email = Convert.ToString(sqldatareader["Email"])
-                };
+
+                var vendor = FillVendorForSqlRow(sqldatareader);
                 vendors.Add(vendor); // adding what is read into a list 
             }
             sqldatareader.Close(); // closes reader// only 1 reader can be open at a time
             return vendors; // return list of vendors 
         }
 
+        public Vendors GetByCode(string code)
+        {
+            var sql = " SELECT * from Vendors Where code = @code; ";
+            var cmd = new SqlCommand(sql, connection.sqlconn);
+            cmd.Parameters.AddWithValue("@code", code); // creating variable for the only piece of data needed for method 
+            var sqldatareader = cmd.ExecuteReader();
+
+            if (!sqldatareader.HasRows)
+            {
+
+                sqldatareader.Close();
+                return null;
+            }
+
+            sqldatareader.Read();
+
+            var vendor = FillVendorForSqlRow(sqldatareader);          
+            sqldatareader.Close();
+            return vendor; 
+
+        }
+
+
         public Vendors GetByPK(int id)
         {
             var sql = $"Select * from Vendors where Id = {id};";
             var cmd = new SqlCommand(sql, connection.sqlconn);
+            cmd.Parameters.AddWithValue("@id", id); // creating variable for the only piece of data needed for method
             var sqldatareader = cmd.ExecuteReader();
 
             if (!sqldatareader.HasRows)
@@ -56,25 +88,14 @@ namespace CSharpToSqlLib
             }
             sqldatareader.Read();
 
-            var vendor = new Vendors()
-            {
-                Id = Convert.ToInt32(sqldatareader["Id"]),
-                Code = Convert.ToString(sqldatareader["Code"]),
-                Name = Convert.ToString(sqldatareader["Name"]),
-                Address = Convert.ToString(sqldatareader["Address"]), 
-                City = Convert.ToString(sqldatareader["City"]),
-                State = Convert.ToString(sqldatareader["State"]),
-                Zip = Convert.ToString(sqldatareader["Zip"]),
-                Phone = Convert.ToString(sqldatareader["Phone"]),
-                Email = Convert.ToString(sqldatareader["Email"])
-            };
+            var vendor = FillVendorForSqlRow(sqldatareader);           
             sqldatareader.Close();
             return vendor;
         }
 
         public bool Create(Vendors vendors)
         {
-            var sql = $" Insert into Vendros " +
+            var sql = $" Insert into Vendors " +
                 "(Code, Name, Address, City, State, Zip, Phone, Email) " +
                 " VALUES " +
                 "(@Code, @Name, @Address, @City, @State, @Zip, @Phone, @Email) ; ";

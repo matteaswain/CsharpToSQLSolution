@@ -5,7 +5,14 @@ using System.Text;
 
 namespace CSharpToSqlLib
 {
-    public class Connection
+    /*Dependancy Injection 
+     *  limited number of connections to Sql. There is a need for the controllers to have a single connection 
+     *  not many. A construter is needed to help controll the connection. Sql connection can be passed through a single 
+     *  constructur and accessed by other classes/controllers. This means that each controller could access the same
+     *  connection by making an instance of the connection class and use when needed. 
+     *  This also allows for changes to be made to the Connection class without any need to update any other classes. 
+*/
+    public class Connection  
     {
         public SqlConnection sqlconn { get; set; } // property for SQL Conn. 
 
