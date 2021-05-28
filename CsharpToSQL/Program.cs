@@ -67,11 +67,25 @@ namespace CsharpToSQL
             //};
             //var success = vendorsController.Create(newvendor);
 
+            var requestcontroller = new RequestsController(sqlconn);
+            var requests = requestcontroller.GetAll();
+
+            //var newrequest = new Request()
+            //{
+            //    Description = " Kona Coffee ",
+            //    Justification = " Out of Coffee ",
+            //    RejectionReason = null, 
+            //    DeliveryMode = " Pick up ",
+            //    Status = " Approved ", 
+            //    Total = 7, 
+            //    UserId = 4
+            //};
+            //var success = requestcontroller.Create(newrequest);
 
             // INSERTING A NEW PRODUCT
 
-            var productcntrol = new ProductsController(sqlconn);
-            var products = productcntrol.GetAll();
+           // var productcntrol = new ProductsController(sqlconn);
+            //var products = productcntrol.GetAll();
 
             //var newproduct = new Product()
             //{
@@ -88,7 +102,7 @@ namespace CsharpToSQL
 
 
 
-            //sqlconn.Disconnect();
+            sqlconn.Disconnect();
 
 
            //var sqllib = new SqlLib(); // new instance of your Library class
@@ -119,10 +133,10 @@ namespace CsharpToSQL
             // //var success = sqllib.Delete(user); // change to user 
 
 
-            /*sqllib.Disconnect();*/ // calling the Disconn method
+           // sqllib.Disconnect(); // calling the Disconn method
 
-            var productPriceAvg = (from p in products
-                                   select p).Average(productPriceAvg => productPriceAvg.Price);
+           // var productPriceAvg = (from p in products
+                                  // select p).Average(productPriceAvg => productPriceAvg.Price);
 
         }
     }

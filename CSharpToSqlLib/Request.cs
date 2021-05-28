@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CSharpToSqlLib
 {
-    class Request
+    public class Request
     {
         public int Id { get; set; }
         public string Description { get; set; }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CSharpToSqlLib
 {
-    class RequestsController
+    public class RequestsController
     {
         private static Connection connection { get; set; }
 
@@ -54,11 +54,11 @@ namespace CSharpToSqlLib
                 requests.Add(request);
             }
             sqldatareader.Close();
-            foreach(var request in requests)
+            foreach (var request in requests)
             {
                 GetUserForRequest(request);
             }
-            
+            return requests;
         }
 
         private void GetUserForRequest(Request request)
@@ -84,14 +84,52 @@ namespace CSharpToSqlLib
             sqldatareader.Close();
             return request;
 
+        }
 
+        public bool Create(Request request)
+        {
+            var sql = $" Insert into Requests " +
+                " (Description, Justification, RejectionReason, DeliveryMode, Status, Total, UserId) " +
+                " VALUES " +
+                "  (@Description, @Justification, @RejectionReason, @DeliveryMode, @Status, @Total, @UserId) ; ";
 
+            var cmd = new SqlCommand(sql, connection.sqlconn);
+            FillParameterForSql(cmd, request);
+            var rowsAffected = cmd.ExecuteNonQuery();
 
+            return (rowsAffected == 1);
 
         }
 
+        public bool Change(Request request)
+        {
+            var sql = " UPDATE Requests set " +
+                " Description = @Description, " +
+                " Justification = @Justification, " +
+                " RejectionReason = RejectionReason, " +
+                " DeliveryMode = @DeliveryMode, " +
+                " Status = @ Status, " +
+                " Total = @Total, " +
+                " UserId = @UserId, " +
+                " Where Id = @Id; ";
 
 
+            var cmd = new SqlCommand(sql, connection.sqlconn);
+            FillParameterForSql(cmd, request);
+            var rowsAffected = cmd.ExecuteNonQuery();
+            return (rowsAffected == 1);
+        }
+
+
+        public bool Delete(Request request)
+        {
+            var sql = " DELETE from Requests where Id = @Id; ";
+            var cmd = new SqlCommand(sql, connection.sqlconn);
+
+            cmd.Parameters.AddWithValue("@Id", request.Id);
+            var rowsAffected = cmd.ExecuteNonQuery();
+            return (rowsAffected == 1);
+        }
     }
 
 }

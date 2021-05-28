@@ -143,7 +143,7 @@ namespace CSharpToSqlLib
         public bool Delete (Product product)
         {
 
-            var sql = " DELETE from Products wgere Id = @Id; ";
+            var sql = " DELETE from Products where Id = @Id; ";
             var cmd = new SqlCommand(sql, connection.sqlconn);
 
             cmd.Parameters.AddWithValue("@Id", product.Id);
